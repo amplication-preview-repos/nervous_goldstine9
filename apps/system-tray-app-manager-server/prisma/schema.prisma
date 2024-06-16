@@ -1,0 +1,26 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Shortcut {
+  appField   AppModel? @relation(fields: [appFieldId], references: [id])
+  appFieldId String?
+  createdAt  DateTime  @default(now())
+  id         String    @id @default(cuid())
+  position   Int?
+  updatedAt  DateTime  @updatedAt
+}
+
+model AppModel {
+  createdAt DateTime   @default(now())
+  filePath  String?
+  id        String     @id @default(cuid())
+  name      String?
+  shortcuts Shortcut[]
+  updatedAt DateTime   @updatedAt
+}
